@@ -1,0 +1,48 @@
+<div class="panel panel-default">
+    <nvd3-pie-chart
+            data="transactions"
+            id="spending"
+            showLabels="true"
+            x="donutXFunction()"
+            y="donutYFunction()"
+            donut="true"
+            donutRatio="0.25"
+            height="500"
+            tooltips="true"
+            donutLabelsOutside="true">
+        <!--<svg height="60"></svg>-->
+    </nvd3-pie-chart>
+</div>
+<div class="panel panel-default">
+    <nvd3-discrete-bar-chart
+            data="barChartData"
+            showXAxis="true"
+            showYAxis="true"
+            showValues="true"
+            showLegend="true"
+            >
+    </nvd3-discrete-bar-chart>
+</div>
+<div class="jumbotron">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>description</th>
+                <th>category</th>
+                <th>amount</th>
+                <th>date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in transactions">
+               <td>{{item.id}}</td>
+               <td>{{item.description}}</td>
+               <td>{{item.category}}</td>
+               <td>{{item.amount}}</td>
+               <td>{{item.date | date:'dd-MM-yy hh:mm'}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
