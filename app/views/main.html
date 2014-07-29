@@ -1,31 +1,56 @@
-<div class="panel panel-default">
-    <nvd3-pie-chart
-            data="transactions"
-            id="spending"
-            showLabels="true"
-            x="donutXFunction()"
-            y="donutYFunction()"
-            donut="true"
-            donutRatio="0.25"
-            height="500"
-            tooltips="true"
-            donutLabelsOutside="true">
-        <!--<svg height="60"></svg>-->
-    </nvd3-pie-chart>
-</div>
-<div class="panel panel-default">
-    <nvd3-discrete-bar-chart
-            data="barChartData"
-            showXAxis="true"
-            showYAxis="true"
-            showValues="true"
-            showLegend="true"
-            >
-    </nvd3-discrete-bar-chart>
-</div>
-<div class="jumbotron">
-    <table class="table table-striped">
-        <thead>
+<div>
+    <div class="header">
+        <ul class="nav nav-pills pull-right">
+            <li class="active"><a ng-href="#/">Home</a></li>
+            <li><a ng-href="" ng-click="logout()">Log out</a></li>
+        </ul>
+        <h3 class="text-muted">Spendings</h3>
+    </div>
+
+    <div>
+        <label for="expenseInterval">Since : </label>
+        <select class="form-control" name="expenseInterval" id="expenseInterval" ng-model="expenseInterval" ng-change="refreshData()">
+            <option name="Last 1 month" value="1">Last 1 month</option>
+            <option name="Last 2 months" value="2">Last 2 months</option>
+            <option name="Last 3 months" value="3">Last 3 months</option>
+        </select>
+    </div>
+
+    <div class="panel panel-default">
+
+        <nvd3-pie-chart
+                data="donutChartData"
+                id="spending"
+                showLabels="true"
+                showLegend="true"
+                x="donutXFunction()"
+                y="donutYFunction()"
+                donut="true"
+                donutRatio="0.25"
+                height="500"
+                tooltips="true"
+                objectEquality="true"
+                donutLabelsOutside="true">
+            <!--<svg height="60"></svg>-->
+        </nvd3-pie-chart>
+    </div>
+    <div class="panel panel-default">
+        <nvd3-multi-bar-horizontal-chart
+                data="barChartData"
+                showXAxis="true"
+                showYAxis="true"
+                showValues="true"
+                showLegend="true"
+                xaxislabel="categories"
+                yaxislabel="amount"
+                height="400"
+                objectEquality="true"
+                >
+        </nvd3-multi-bar-horizontal-chart>
+    </div>
+    <div class="jumbotron">
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <th>#</th>
                 <th>description</th>
@@ -33,16 +58,17 @@
                 <th>amount</th>
                 <th>date</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr ng-repeat="item in transactions">
-               <td>{{item.id}}</td>
-               <td>{{item.description}}</td>
-               <td>{{item.category}}</td>
-               <td>{{item.amount}}</td>
-               <td>{{item.date | date:'dd-MM-yy hh:mm'}}</td>
+                <td>{{item.id}}</td>
+                <td>{{item.description}}</td>
+                <td>{{item.category}}</td>
+                <td>{{item.amount}}</td>
+                <td>{{item.date | date:'dd-MM-yy hh:mm'}}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
+    </div>
 </div>

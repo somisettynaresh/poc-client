@@ -2,12 +2,18 @@
 
 
 angular.module('webuiApp')
-  .controller('MainCtrl', ['$scope','$http',function ($scope,$http) {
+  .controller('MainCtrl', ['$rootScope','$scope','$http','$cookieStore','AUTH_EVENTS',function ($rootScope,$scope,$http,$cookieStore,AUTH_EVENTS) {
         $http.get("/poc-1.0/transactions").success(function(response){
             $scope.transactions = response;
-            $scope.barChartData = mapToBarChart();
+            $scope.donutChartData = mapToDonut($scope.transactions);
+            $scope.barChartData = mapToBarChart($scope.transactions);
         });
 
+        $scope.expenseInterval =1;
+
+        /*$scope.$watch('transactions', function() {
+           alert('hey, myVar has changed!');
+        });*/
         $scope.donutXFunction = function(){
             return function(d){
                 return d.category;
@@ -19,23 +25,9 @@ angular.module('webuiApp')
             }
         }
 
-        var mapToBarChart = function(){
-            var i=0;
-            var start = {};
-            start[$scope.transactions[0].category] =$scope.transactions[0].value;
-            var values = _.reduce($scope.transactions,function(result,item,key){
-               /* if(!scope.transactions)
-                return [item.category,item.amount];*/
+        var mapToBarChart = function(transactions){
+             var values= utils.aggregateByKeyValueAsArrays(transactions,"category","amount");
 
-                result[item.category]] = value[result[item.category]] + item.amount
-
-
-                return value;
-             },start );
-
-            values = _.map($scope.transactions,function(item){
-                return [item.category,item.amount];
-            });
             var data = [{
                 key:"spendings",
                 values:values
@@ -43,4 +35,25 @@ angular.module('webuiApp')
             return data;
         }
 
+        var mapToDonut = function(transactions){
+             var values= utils.aggregateByKeyValueAsObjects(transactions,"category","amount");
+            return values;
+        }
+
+       $scope.logout = function(){
+            $cookieStore.put("user",undefined);
+            $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated)
+       }
+
+
+       $scope.refreshData = function(){
+            var currentDate = new Date();
+            var chosenInterval = $scope.expenseInterval *1000*60*60*24*30;
+            var transactions = $scope.transactions.filter(function(item){
+                var interval = currentDate.getTime() - item.date;
+                return chosenInterval - interval >= 0?true:false;
+            })
+            $scope.donutChartData = mapToDonut(transactions);
+            $scope.barChartData = mapToBarChart(transactions);
+       }
   }]);

@@ -1,0 +1,35 @@
+<style>
+body {
+	background-color: #F7F7F6;
+}
+
+.login {
+	padding-top: 65px;
+}
+
+.center {
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
+}
+</style>
+<legend> Login </legend>
+<div class="col-lg-10 center" ng-controller="LoginController">
+	<form class="form-horizontal" name="loginForm" ng-submit="login(credentials)" novalidate>
+		<div class="form-group">
+			<div class="col-lg-11 center">
+				<input type='text' id='username' name='username' 
+					   value='' class="form-control" placeholder="Username"
+					   ng-model="credentials.username">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-lg-11 center">
+				<input type='password' id='password' name='password' 
+					   class="form-control" placeholder="password"
+					   ng-model="credentials.password" />
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary btn-block">Login</button>
+	</form>
+</div>
